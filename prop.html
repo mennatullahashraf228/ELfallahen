@@ -12,26 +12,6 @@
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 
     <style>
-        .navbar-brand {
-            color: rgb(31, 159, 84) !important;
-            font-weight: bold;
-            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-        }
-
-        .navbar-nav a {
-            /* text-decoration: underline; */
-            padding: 7px;
-            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-
-        }
-
-        .navbar-nav a:hover {
-            text-decoration: underline;
-            text-underline-offset: 8px;
-            transition: all 0.3s;
-            color: rgb(31, 159, 84) !important;
-
-        }
         .swiper {
             padding: 30px;
         }
@@ -283,7 +263,16 @@
             width: 30px;
             text-align: center;
         }
-
+        #pp {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: center;
+            padding: 0 200px;
+            background-color: rgba(187, 237, 208, 0.479);
+            padding: 30px;
+            margin: 30px;
+        }
     </style>
 </head>
 
@@ -360,6 +349,11 @@
         <div class="swiper-wrapper" id="swiperWrapper"></div>
         <div class="swiper-pagination"></div>
     </div>
+    <h1 style="text-align: center;">recently view</h1>
+    <div id="pp">
+        
+    </div>
+
 
     <footer class="footer">
         <div class="footer-container">
@@ -509,6 +503,37 @@
                 `;
                 wrapper.appendChild(slide);
             });
+            const parant = document.getElementById("pp");
+
+                allProducts.slice(0, 3).forEach(item => {
+                    const card = document.createElement("div");
+                    card.classList.add("property-card");
+                    const isFaved = myArray.some(p => p.id === item.id);
+                    const favClass = isFaved ? "faved" : "fav_btn";
+
+                    card.innerHTML = `
+        <img src="${item.images[0]}" alt="${item.title}" />
+        <div class="property-info">
+            <div class="tags">
+                <span class="type">${item.type}</span>
+                <span class="status">${item.status}</span>
+            </div>
+            <h2>${item.title}</h2>
+            <h3><i class="fa-solid fa-location-dot"></i> ${item.location}</h3>
+            <div class="details">
+                <span><i class="fa-solid fa-bed"></i> ${item.bedrooms} Beds</span>
+                <span><i class="fa-solid fa-bath"></i> ${item.bathrooms} Baths</span>
+                <span><i class="fa-solid fa-ruler-combined"></i> ${item.squareFeet} sq ft</span>
+            </div>
+            <div id='fav'>
+                <h1 class="price">$${item.price}</h1>
+                <i class="fa-regular fa-heart ${favClass}" onclick="loved(this,${item.id})"></i>
+            </div>
+            <button onclick="ViewDetails(${item.id})">View Details</button>
+        </div>
+    `;
+                    parant.appendChild(card);
+                });
     
             const swiper = new Swiper(".mySwiper", {
                 slidesPerView: 3,
